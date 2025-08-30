@@ -1,0 +1,115 @@
+{
+  "name": "Ocean Sentinel - AI-Powered Coastal Threat Detection",
+  "short_name": "Ocean Sentinel",
+  "description": "AI-powered coastal threat detection system with blockchain data integrity",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0891b2",
+  "theme_color": "#0891b2",
+  "orientation": "any",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["productivity", "utilities", "news"],
+  "screenshots": [
+    {
+      "src": "/assets/screenshot-desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Ocean Sentinel Dashboard"
+    },
+    {
+      "src": "/assets/screenshot-mobile.png",
+      "sizes": "375x667",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Mobile Threat Monitor"
+    }
+  ],
+  "icons": [
+    {
+      "src": "/assets/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/assets/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/assets/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/assets/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/assets/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/assets/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/assets/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/assets/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "View Active Threats",
+      "short_name": "Threats",
+      "description": "View current active threats",
+      "url": "/#threats",
+      "icons": [{ "src": "/assets/shortcut-threats.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Alert Dashboard",
+      "short_name": "Alerts",
+      "description": "Manage alert notifications",
+      "url": "/#alerts",
+      "icons": [{ "src": "/assets/shortcut-alerts.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Monitoring Center",
+      "short_name": "Monitor",
+      "description": "Real-time monitoring controls",
+      "url": "/#monitoring",
+      "icons": [{ "src": "/assets/shortcut-monitor.png", "sizes": "96x96" }]
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "https://oceansentinel.ai/manifest.json"
+    }
+  ],
+  "prefer_related_applications": false,
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  }
+}

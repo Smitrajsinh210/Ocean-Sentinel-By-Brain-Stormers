@@ -1,0 +1,510 @@
+/**
+ * Ocean Sentinel - Responsive Styles
+ * Mobile-first responsive design utilities
+ */
+
+/* Responsive Utilities */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.container-fluid {
+    width: 100%;
+    padding: 0 1rem;
+}
+
+/* Grid System */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -0.5rem;
+}
+
+.col {
+    flex: 1;
+    padding: 0 0.5rem;
+}
+
+.col-1 { flex: 0 0 8.333333%; max-width: 8.333333%; }
+.col-2 { flex: 0 0 16.666667%; max-width: 16.666667%; }
+.col-3 { flex: 0 0 25%; max-width: 25%; }
+.col-4 { flex: 0 0 33.333333%; max-width: 33.333333%; }
+.col-6 { flex: 0 0 50%; max-width: 50%; }
+.col-8 { flex: 0 0 66.666667%; max-width: 66.666667%; }
+.col-12 { flex: 0 0 100%; max-width: 100%; }
+
+/* Responsive Breakpoints */
+@media (max-width: 1200px) {
+    .container {
+        max-width: 960px;
+    }
+}
+
+@media (max-width: 992px) {
+    .container {
+        max-width: 720px;
+    }
+    
+    /* Large tablet adjustments */
+    .lg-col-12 { flex: 0 0 100%; max-width: 100%; }
+    .lg-col-6 { flex: 0 0 50%; max-width: 50%; }
+    
+    .dashboard-row {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .metrics-grid {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1rem;
+    }
+    
+    .header-title {
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        max-width: 540px;
+        padding: 0 0.75rem;
+    }
+    
+    /* Tablet adjustments */
+    .md-col-12 { flex: 0 0 100%; max-width: 100%; }
+    .md-col-6 { flex: 0 0 50%; max-width: 50%; }
+    
+    /* Mobile Navigation */
+    .mobile-menu-toggle {
+        display: block;
+        background: none;
+        border: none;
+        color: var(--gray-700);
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 0.5rem;
+    }
+    
+    .dashboard-sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+    
+    .dashboard-sidebar.mobile-open {
+        transform: translateX(0);
+    }
+    
+    .dashboard-main {
+        margin-left: 0;
+    }
+    
+    /* Mobile overlay */
+    .mobile-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 99;
+        display: none;
+    }
+    
+    .mobile-overlay.active {
+        display: block;
+    }
+    
+    /* Content adjustments */
+    .dashboard-content {
+        padding: 1.5rem 1rem;
+    }
+    
+    .card-header {
+        padding: 1.25rem 1rem;
+    }
+    
+    .card-content {
+        padding: 1.25rem 1rem;
+    }
+    
+    /* Map adjustments */
+    .threat-map-container {
+        height: 350px;
+    }
+    
+    /* Table responsiveness */
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .data-table {
+        min-width: 600px;
+    }
+    
+    /* Chart responsiveness */
+    .chart-container {
+        padding: 1rem 0.75rem;
+    }
+    
+    /* Button stacking */
+    .button-group {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .button-group .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    /* Form adjustments */
+    .form-row {
+        flex-direction: column;
+    }
+    
+    .form-group {
+        margin-bottom: 1.25rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .container {
+        padding: 0 0.5rem;
+    }
+    
+    /* Small mobile adjustments */
+    .sm-col-12 { flex: 0 0 100%; max-width: 100%; }
+    
+    /* Header adjustments */
+    .dashboard-header {
+        padding: 0 1rem;
+        flex-wrap: wrap;
+        min-height: var(--header-height);
+    }
+    
+    .header-left {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .header-right {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.25rem;
+    }
+    
+    .header-title {
+        font-size: 1.125rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    /* Connection status compact */
+    .connection-status {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.7rem;
+    }
+    
+    /* Sidebar adjustments */
+    .sidebar-header {
+        padding: 1.5rem 1rem 1rem;
+    }
+    
+    .nav-item {
+        padding: 0.75rem 1rem;
+    }
+    
+    /* Content spacing */
+    .dashboard-content {
+        padding: 1rem 0.75rem;
+    }
+    
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    /* Metrics compact layout */
+    .metrics-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+    
+    .metric-card {
+        padding: 1rem;
+        text-align: left;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .metric-info {
+        flex: 1;
+    }
+    
+    .metric-value {
+        font-size: 1.75rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    .metric-label {
+        font-size: 0.75rem;
+    }
+    
+    /* Threat cards compact */
+    .threat-header {
+        padding: 0.75rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    
+    .threat-content {
+        padding: 0 0.75rem 0.75rem;
+    }
+    
+    .threat-actions {
+        padding: 0.75rem;
+        flex-wrap: wrap;
+    }
+    
+    /* Map compact */
+    .threat-map-container {
+        height: 250px;
+    }
+    
+    /* Modal adjustments */
+    .modal-content {
+        margin: 1rem;
+        max-height: calc(100vh - 2rem);
+    }
+    
+    .critical-alert {
+        margin: 0.5rem;
+        width: calc(100% - 1rem);
+    }
+    
+    /* Form stack */
+    .form-inline {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .form-inline .form-group {
+        margin-bottom: 1rem;
+    }
+    
+    /* Chart mobile optimizations */
+    .chart-header {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+    
+    .chart-title {
+        margin-bottom: 0.75rem;
+    }
+    
+    .chart-controls {
+        justify-content: center;
+    }
+    
+    /* Tooltip adjustments */
+    .chart-tooltip,
+    .timeline-tooltip {
+        font-size: 0.65rem;
+        padding: 0.5rem;
+        max-width: 140px;
+    }
+}
+
+/* Landscape phone adjustments */
+@media (max-width: 896px) and (orientation: landscape) {
+    .dashboard-header {
+        height: 50px;
+    }
+    
+    .dashboard-content {
+        padding: 1rem;
+    }
+    
+    .threat-map-container {
+        height: 300px;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+    /* Increase touch targets */
+    .btn {
+        min-height: 44px;
+        padding: 0.75rem 1.25rem;
+    }
+    
+    .nav-item {
+        min-height: 48px;
+        padding: 0.875rem 1.5rem;
+    }
+    
+    .threat-card {
+        cursor: default;
+    }
+    
+    .threat-card:hover {
+        transform: none;
+        box-shadow: var(--shadow-sm);
+    }
+    
+    /* Remove hover effects */
+    .metric-card:hover,
+    .card:hover {
+        transform: none;
+        box-shadow: var(--shadow-sm);
+    }
+    
+    /* Larger tap targets for charts */
+    .threat-dot {
+        r: 6;
+    }
+    
+    .zoom-btn {
+        width: 44px;
+        height: 44px;
+    }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    /* Crisp icons and images */
+    .nav-icon,
+    .metric-icon {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+    .dashboard-sidebar {
+        transition: none;
+    }
+    
+    .mobile-overlay {
+        transition: none;
+    }
+    
+    .chart-animate-in,
+    .chart-animate-update {
+        animation: none;
+    }
+    
+    .threat-card,
+    .metric-card,
+    .btn {
+        transition: none;
+    }
+}
+
+/* Focus visible for keyboard navigation */
+@media (prefers-reduced-motion: no-preference) {
+    .btn:focus-visible,
+    .nav-item:focus-visible,
+    .form-input:focus-visible {
+        outline: 2px solid var(--primary-blue);
+        outline-offset: 2px;
+    }
+}
+
+/* Dark mode responsive adjustments */
+@media (prefers-color-scheme: dark) {
+    .mobile-overlay {
+        background: rgba(0, 0, 0, 0.8);
+    }
+    
+    .dashboard-header {
+        border-bottom: 1px solid var(--gray-700);
+    }
+    
+    .mobile-menu-toggle {
+        color: var(--gray-300);
+    }
+}
+
+/* Print responsive */
+@media print {
+    .mobile-menu-toggle,
+    .mobile-overlay,
+    .dashboard-sidebar {
+        display: none !important;
+    }
+    
+    .dashboard-main {
+        margin-left: 0 !important;
+    }
+    
+    .dashboard-grid,
+    .metrics-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+    
+    .chart-container {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+    
+    .threat-card {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+}
+
+/* Utility classes for responsive design */
+.hide-mobile {
+    display: block;
+}
+
+.show-mobile {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .hide-mobile {
+        display: none;
+    }
+    
+    .show-mobile {
+        display: block;
+    }
+}
+
+.text-center-mobile {
+    text-align: left;
+}
+
+@media (max-width: 576px) {
+    .text-center-mobile {
+        text-align: center;
+    }
+}
+
+/* Responsive spacing utilities */
+.spacing-mobile {
+    margin: 1rem 0;
+}
+
+@media (max-width: 768px) {
+    .spacing-mobile {
+        margin: 0.75rem 0;
+    }
+}
+
+@media (max-width: 576px) {
+    .spacing-mobile {
+        margin: 0.5rem 0;
+    }
+}

@@ -1,0 +1,81 @@
+{
+  "name": "ocean-sentinel-frontend",
+  "version": "1.0.0",
+  "description": "Ocean Sentinel - AI-Powered Coastal Threat Detection Frontend",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext .js,.ts,.tsx",
+    "lint:fix": "eslint . --ext .js,.ts,.tsx --fix",
+    "format": "prettier --write .",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "deploy": "npm run build && vercel deploy --prod"
+  },
+  "dependencies": {
+    "d3": "^7.8.5",
+    "leaflet": "^1.9.4",
+    "leaflet.heat": "^0.2.0",
+    "leaflet.markercluster": "^1.5.3",
+    "pusher-js": "^8.4.0-rc2",
+    "@supabase/supabase-js": "^2.38.4",
+    "web3": "^4.3.0",
+    "@tensorflow/tfjs": "^4.13.0",
+    "chart.js": "^4.4.0",
+    "moment": "^2.29.4",
+    "axios": "^1.6.2",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "eslint": "^8.54.0",
+    "prettier": "^3.1.0",
+    "jest": "^29.7.0",
+    "@types/d3": "^7.4.3",
+    "@types/leaflet": "^1.9.8",
+    "@types/lodash": "^4.14.202",
+    "typescript": "^5.3.2",
+    "sass": "^1.69.5",
+    "postcss": "^8.4.32",
+    "autoprefixer": "^10.4.16",
+    "cssnano": "^6.0.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/ocean-sentinel.git"
+  },
+  "keywords": [
+    "environmental",
+    "threat-detection",
+    "ai",
+    "blockchain",
+    "coastal-monitoring",
+    "emergency-response"
+  ],
+  "author": "Ocean Sentinel Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/your-org/ocean-sentinel/issues"
+  },
+  "homepage": "https://oceansentinel.ai"
+}

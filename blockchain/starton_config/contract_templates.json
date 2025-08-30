@@ -1,0 +1,720 @@
+{
+  "starton": {
+    "version": "v3",
+    "platform": "Ocean Sentinel Starton Integration",
+    "description": "Starton-specific contract templates for Ocean Sentinel blockchain deployment"
+  },
+  "templates": {
+    "OceanSentinelData": {
+      "starton_template_id": "custom_data_storage",
+      "name": "Ocean Sentinel Environmental Data Contract",
+      "description": "Starton template for environmental data integrity verification",
+      "category": "data_storage",
+      "abi_hash": null,
+      "bytecode_hash": null,
+      "starton_config": {
+        "compilation": {
+          "solidity_version": "0.8.19",
+          "optimizer": true,
+          "optimizer_runs": 200,
+          "evm_version": "istanbul"
+        },
+        "deployment": {
+          "gas_limit": 3000000,
+          "gas_price_strategy": "average",
+          "confirmations": 3,
+          "timeout": 300000
+        },
+        "network_support": [
+          "polygon-mumbai",
+          "ethereum-goerli", 
+          "binance-testnet"
+        ]
+      },
+      "constructor": {
+        "params": [],
+        "param_types": [],
+        "param_descriptions": []
+      },
+      "post_deployment": [
+        {
+          "function_name": "addAuthorizedLogger",
+          "params": ["{{DEPLOYER_ADDRESS}}"],
+          "param_types": ["address"],
+          "description": "Add deployer as authorized data logger",
+          "required": true
+        },
+        {
+          "function_name": "addAuthorizedVerifier",
+          "params": ["{{DEPLOYER_ADDRESS}}"],
+          "param_types": ["address"], 
+          "description": "Add deployer as authorized data verifier",
+          "required": true
+        }
+      ],
+      "starton_functions": {
+        "logEnvironmentalData": {
+          "type": "WRITE",
+          "gas_estimate": 200000,
+          "starton_params": [
+            {
+              "name": "_dataHash",
+              "type": "bytes32",
+              "indexed": true,
+              "description": "Keccak256 hash of environmental data"
+            },
+            {
+              "name": "_dataSource",
+              "type": "string",
+              "indexed": false,
+              "description": "Data source identifier (weather_api, sensor_network, etc.)"
+            },
+            {
+              "name": "_dataType", 
+              "type": "string",
+              "indexed": false,
+              "description": "Type of environmental data (temperature, humidity, etc.)"
+            }
+          ],
+          "starton_events": ["DataLogged"],
+          "access_control": "authorizedLogger"
+        },
+        "verifyDataIntegrity": {
+          "type": "WRITE",
+          "gas_estimate": 150000,
+          "starton_params": [
+            {
+              "name": "_dataHash",
+              "type": "bytes32",
+              "indexed": true,
+              "description": "Hash of data to verify"
+            },
+            {
+              "name": "_isValid",
+              "type": "bool",
+              "indexed": false,
+              "description": "Verification result"
+            }
+          ],
+          "starton_events": ["DataVerified"],
+          "access_control": "authorizedVerifier"
+        },
+        "getEnvironmentalData": {
+          "type": "READ",
+          "gas_estimate": 0,
+          "starton_params": [
+            {
+              "name": "_dataHash",
+              "type": "bytes32",
+              "indexed": false,
+              "description": "Hash of environmental data record"
+            }
+          ],
+          "returns": "EnvironmentalData struct",
+          "access_control": "public"
+        }
+      },
+      "starton_events": {
+        "DataLogged": {
+          "params": [
+            {
+              "name": "dataHash",
+              "type": "bytes32",
+              "indexed": true
+            },
+            {
+              "name": "logger",
+              "type": "address", 
+              "indexed": true
+            },
+            {
+              "name": "timestamp",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "name": "dataSource",
+              "type": "string",
+              "indexed": false
+            },
+            {
+              "name": "dataType",
+              "type": "string",
+              "indexed": false
+            }
+          ],
+          "webhook_url": "{{WEBHOOK_DATA_LOGGED}}",
+          "notification_priority": "HIGH"
+        },
+        "DataVerified": {
+          "params": [
+            {
+              "name": "dataHash",
+              "type": "bytes32",
+              "indexed": true
+            },
+            {
+              "name": "verifier",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "name": "timestamp",
+              "type": "uint256", 
+              "indexed": false
+            },
+            {
+              "name": "isValid",
+              "type": "bool",
+              "indexed": false
+            }
+          ],
+          "webhook_url": "{{WEBHOOK_DATA_VERIFIED}}",
+          "notification_priority": "MEDIUM"
+        }
+      }
+    },
+    "ThreatRegistry": {
+      "starton_template_id": "custom_threat_registry",
+      "name": "Ocean Sentinel Threat Registry Contract",
+      "description": "Starton template for environmental threat registration and management",
+      "category": "registry",
+      "abi_hash": null,
+      "bytecode_hash": null,
+      "starton_config": {
+        "compilation": {
+          "solidity_version": "0.8.19",
+          "optimizer": true,
+          "optimizer_runs": 200,
+          "evm_version": "istanbul"
+        },
+        "deployment": {
+          "gas_limit": 4000000,
+          "gas_price_strategy": "average",
+          "confirmations": 3,
+          "timeout": 300000
+        },
+        "network_support": [
+          "polygon-mumbai",
+          "ethereum-goerli",
+          "binance-testnet"
+        ]
+      },
+      "constructor": {
+        "params": [],
+        "param_types": [],
+        "param_descriptions": []
+      },
+      "post_deployment": [
+        {
+          "function_name": "addAuthorizedReporter",
+          "params": ["{{DEPLOYER_ADDRESS}}"],
+          "param_types": ["address"],
+          "description": "Add deployer as authorized threat reporter",
+          "required": true
+        },
+        {
+          "function_name": "addAuthorizedVerifier",
+          "params": ["{{DEPLOYER_ADDRESS}}"],
+          "param_types": ["address"],
+          "description": "Add deployer as authorized threat verifier",
+          "required": true
+        }
+      ],
+      "starton_functions": {
+        "registerThreat": {
+          "type": "WRITE",
+          "gas_estimate": 300000,
+          "starton_params": [
+            {
+              "name": "_threatType",
+              "type": "uint8",
+              "indexed": false,
+              "description": "Threat type enum (0=STORM, 1=POLLUTION, etc.)"
+            },
+            {
+              "name": "_severity",
+              "type": "uint8", 
+              "indexed": false,
+              "description": "Severity level 1-5"
+            },
+            {
+              "name": "_confidence",
+              "type": "uint256",
+              "indexed": false,
+              "description": "AI confidence percentage 0-100"
+            },
+            {
+              "name": "_latitude",
+              "type": "int256",
+              "indexed": false,
+              "description": "Latitude multiplied by 1e6"
+            },
+            {
+              "name": "_longitude",
+              "type": "int256",
+              "indexed": false,
+              "description": "Longitude multiplied by 1e6"
+            },
+            {
+              "name": "_description",
+              "type": "string",
+              "indexed": false,
+              "description": "Human-readable threat description"
+            },
+            {
+              "name": "_dataHash",
+              "type": "bytes32",
+              "indexed": false,
+              "description": "Hash of supporting environmental data"
+            },
+            {
+              "name": "_affectedPopulation",
+              "type": "uint256",
+              "indexed": false,
+              "description": "Estimated affected population count"
+            }
+          ],
+          "starton_events": ["ThreatRegistered"],
+          "access_control": "authorizedReporter"
+        },
+        "updateThreatStatus": {
+          "type": "WRITE",
+          "gas_estimate": 100000,
+          "starton_params": [
+            {
+              "name": "_threatId",
+              "type": "uint256",
+              "indexed": false,
+              "description": "Unique threat identifier"
+            },
+            {
+              "name": "_newStatus",
+              "type": "uint8",
+              "indexed": false,
+              "description": "New status enum (0=ACTIVE, 1=RESOLVED, etc.)"
+            }
+          ],
+          "starton_events": ["ThreatStatusUpdated"],
+          "access_control": "authorizedReporter"
+        },
+        "verifyThreat": {
+          "type": "WRITE",
+          "gas_estimate": 120000,
+          "starton_params": [
+            {
+              "name": "_threatId",
+              "type": "uint256",
+              "indexed": false,
+              "description": "Threat ID to verify"
+            },
+            {
+              "name": "_isVerified",
+              "type": "bool",
+              "indexed": false,
+              "description": "Verification result"
+            }
+          ],
+          "starton_events": ["ThreatVerified"],
+          "access_control": "authorizedVerifier"
+        },
+        "getThreat": {
+          "type": "READ",
+          "gas_estimate": 0,
+          "starton_params": [
+            {
+              "name": "_threatId",
+              "type": "uint256",
+              "indexed": false,
+              "description": "Threat ID to retrieve"
+            }
+          ],
+          "returns": "Threat struct",
+          "access_control": "public"
+        }
+      },
+      "starton_events": {
+        "ThreatRegistered": {
+          "params": [
+            {
+              "name": "threatId",
+              "type": "uint256",
+              "indexed": true
+            },
+            {
+              "name": "threatType", 
+              "type": "uint8",
+              "indexed": true
+            },
+            {
+              "name": "severity",
+              "type": "uint8",
+              "indexed": false
+            },
+            {
+              "name": "reporter",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "name": "timestamp",
+              "type": "uint256",
+              "indexed": false
+            }
+          ],
+          "webhook_url": "{{WEBHOOK_THREAT_REGISTERED}}",
+          "notification_priority": "CRITICAL"
+        },
+        "ThreatStatusUpdated": {
+          "params": [
+            {
+              "name": "threatId",
+              "type": "uint256",
+              "indexed": true
+            },
+            {
+              "name": "oldStatus",
+              "type": "uint8",
+              "indexed": false
+            },
+            {
+              "name": "newStatus",
+              "type": "uint8",
+              "indexed": false
+            },
+            {
+              "name": "updater",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "name": "timestamp",
+              "type": "uint256",
+              "indexed": false
+            }
+          ],
+          "webhook_url": "{{WEBHOOK_THREAT_UPDATED}}",
+          "notification_priority": "HIGH"
+        },
+        "ThreatVerified": {
+          "params": [
+            {
+              "name": "threatId",
+              "type": "uint256",
+              "indexed": true
+            },
+            {
+              "name": "verifier",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "name": "timestamp",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "name": "verified",
+              "type": "bool",
+              "indexed": false
+            }
+          ],
+          "webhook_url": "{{WEBHOOK_THREAT_VERIFIED}}",
+          "notification_priority": "MEDIUM"
+        }
+      }
+    },
+    "AlertContract": {
+      "starton_template_id": "custom_alert_system", 
+      "name": "Ocean Sentinel Alert Management Contract",
+      "description": "Starton template for alert notification tracking",
+      "category": "notifications",
+      "abi_hash": null,
+      "bytecode_hash": null,
+      "starton_config": {
+        "compilation": {
+          "solidity_version": "0.8.19",
+          "optimizer": true,
+          "optimizer_runs": 200,
+          "evm_version": "istanbul"
+        },
+        "deployment": {
+          "gas_limit": 2500000,
+          "gas_price_strategy": "average",
+          "confirmations": 3,
+          "timeout": 300000
+        },
+        "network_support": [
+          "polygon-mumbai",
+          "ethereum-goerli",
+          "binance-testnet"
+        ]
+      },
+      "constructor": {
+        "params": [],
+        "param_types": [],
+        "param_descriptions": []
+      },
+      "post_deployment": [
+        {
+          "function_name": "addAuthorizedSender",
+          "params": ["{{DEPLOYER_ADDRESS}}"],
+          "param_types": ["address"],
+          "description": "Add deployer as authorized alert sender",
+          "required": true
+        },
+        {
+          "function_name": "setEmergencyThreshold",
+          "params": [4],
+          "param_types": ["uint8"],
+          "description": "Set emergency threshold to severity level 4",
+          "required": true
+        }
+      ],
+      "starton_functions": {
+        "createAlert": {
+          "type": "WRITE",
+          "gas_estimate": 250000,
+          "starton_params": [
+            {
+              "name": "_threatId",
+              "type": "uint256",
+              "indexed": false,
+              "description": "Associated threat ID"
+            },
+            {
+              "name": "_message",
+              "type": "string",
+              "indexed": false,
+              "description": "Alert message text"
+            },
+            {
+              "name": "_severity",
+              "type": "uint8",
+              "indexed": false,
+              "description": "Alert severity level 1-5"
+            },
+            {
+              "name": "_channels",
+              "type": "uint8[]",
+              "indexed": false,
+              "description": "Array of notification channels"
+            },
+            {
+              "name": "_recipients",
+              "type": "string[]",
+              "indexed": false,
+              "description": "Array of recipient identifiers"
+            }
+          ],
+          "starton_events": ["AlertCreated", "EmergencyAlert"],
+          "access_control": "authorizedSender"
+        },
+        "updateAlertStatus": {
+          "type": "WRITE",
+          "gas_estimate": 80000,
+          "starton_params": [
+            {
+              "name": "_alertId",
+              "type": "uint256",
+              "indexed": false,
+              "description": "Alert ID to update"
+            },
+            {
+              "name": "_newStatus",
+              "type": "uint8",
+              "indexed": false,
+              "description": "New alert status enum"
+            },
+            {
+              "name": "_failureReason",
+              "type": "string",
+              "indexed": false,
+              "description": "Reason for failure (if applicable)"
+            }
+          ],
+          "starton_events": ["AlertStatusUpdated", "AlertDelivered"],
+          "access_control": "authorizedSender"
+        },
+        "getAlert": {
+          "type": "READ",
+          "gas_estimate": 0,
+          "starton_params": [
+            {
+              "name": "_alertId",
+              "type": "uint256",
+              "indexed": false,
+              "description": "Alert ID to retrieve"
+            }
+          ],
+          "returns": "Alert struct",
+          "access_control": "public"
+        },
+        "getAlertStats": {
+          "type": "READ",
+          "gas_estimate": 0,
+          "starton_params": [],
+          "returns": "AlertStats struct",
+          "access_control": "public"
+        }
+      },
+      "starton_events": {
+        "AlertCreated": {
+          "params": [
+            {
+              "name": "alertId",
+              "type": "uint256",
+              "indexed": true
+            },
+            {
+              "name": "threatId",
+              "type": "uint256", 
+              "indexed": true
+            },
+            {
+              "name": "severity",
+              "type": "uint8",
+              "indexed": false
+            },
+            {
+              "name": "sender",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "name": "timestamp",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "name": "isEmergency",
+              "type": "bool",
+              "indexed": false
+            }
+          ],
+          "webhook_url": "{{WEBHOOK_ALERT_CREATED}}",
+          "notification_priority": "CRITICAL"
+        },
+        "AlertStatusUpdated": {
+          "params": [
+            {
+              "name": "alertId",
+              "type": "uint256",
+              "indexed": true
+            },
+            {
+              "name": "oldStatus",
+              "type": "uint8",
+              "indexed": false
+            },
+            {
+              "name": "newStatus", 
+              "type": "uint8",
+              "indexed": false
+            },
+            {
+              "name": "timestamp",
+              "type": "uint256",
+              "indexed": false
+            }
+          ],
+          "webhook_url": "{{WEBHOOK_ALERT_STATUS_UPDATED}}",
+          "notification_priority": "HIGH"
+        },
+        "AlertDelivered": {
+          "params": [
+            {
+              "name": "alertId",
+              "type": "uint256",
+              "indexed": true
+            },
+            {
+              "name": "deliveryTime",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "name": "timestamp",
+              "type": "uint256",
+              "indexed": false
+            }
+          ],
+          "webhook_url": "{{WEBHOOK_ALERT_DELIVERED}}",
+          "notification_priority": "MEDIUM"
+        },
+        "EmergencyAlert": {
+          "params": [
+            {
+              "name": "alertId",
+              "type": "uint256",
+              "indexed": true
+            },
+            {
+              "name": "threatId",
+              "type": "uint256",
+              "indexed": true
+            },
+            {
+              "name": "severity",
+              "type": "uint8",
+              "indexed": false
+            },
+            {
+              "name": "timestamp",
+              "type": "uint256",
+              "indexed": false
+            }
+          ],
+          "webhook_url": "{{WEBHOOK_EMERGENCY_ALERT}}",
+          "notification_priority": "CRITICAL"
+        }
+      }
+    }
+  },
+  "starton_webhooks": {
+    "base_url": "{{WEBHOOK_BASE_URL}}",
+    "authentication": {
+      "type": "bearer_token",
+      "token": "{{WEBHOOK_AUTH_TOKEN}}"
+    },
+    "retry_policy": {
+      "max_retries": 3,
+      "retry_delay": 5000,
+      "exponential_backoff": true
+    },
+    "endpoints": {
+      "data_logged": "/webhooks/starton/data-logged",
+      "data_verified": "/webhooks/starton/data-verified", 
+      "threat_registered": "/webhooks/starton/threat-registered",
+      "threat_updated": "/webhooks/starton/threat-updated",
+      "threat_verified": "/webhooks/starton/threat-verified",
+      "alert_created": "/webhooks/starton/alert-created",
+      "alert_status_updated": "/webhooks/starton/alert-status-updated",
+      "alert_delivered": "/webhooks/starton/alert-delivered",
+      "emergency_alert": "/webhooks/starton/emergency-alert"
+    }
+  },
+  "starton_monitoring": {
+    "enabled": true,
+    "metrics": {
+      "transaction_count": true,
+      "gas_usage": true,
+      "event_frequency": true,
+      "error_rate": true
+    },
+    "alerts": {
+      "failed_transactions": {
+        "threshold": 5,
+        "window": "1h"
+      },
+      "high_gas_usage": {
+        "threshold": 1000000,
+        "window": "1h"
+      },
+      "event_anomalies": {
+        "enabled": true,
+        "sensitivity": "medium"
+      }
+    }
+  }
+}

@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ocean Sentinel - AI-Powered Coastal Threat Detection System">
+    <meta name="keywords" content="environmental monitoring, threat detection, AI, blockchain, coastal protection">
+    <meta name="author" content="Ocean Sentinel Team">
+    
+    <title>Ocean Sentinel - AI-Powered Coastal Threat Detection</title>
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://oceansentinel.ai">
+    <meta property="og:title" content="Ocean Sentinel - AI-Powered Coastal Threat Detection">
+    <meta property="og:description" content="Transform coastal threat detection with AI-powered monitoring and blockchain data integrity">
+    <meta property="og:image" content="/assets/og-image.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://oceansentinel.ai">
+    <meta property="twitter:title" content="Ocean Sentinel - AI-Powered Coastal Threat Detection">
+    <meta property="twitter:description" content="Transform coastal threat detection with AI-powered monitoring and blockchain data integrity">
+    <meta property="twitter:image" content="/assets/twitter-image.jpg">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0891b2">
+    
+    <!-- External CSS Dependencies -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/dashboard.css">
+    <link rel="stylesheet" href="/css/charts.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+    
+    <!-- Font Loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="/js/dashboard.js" as="script">
+    <link rel="preload" href="https://unpkg.com/d3@7.8.5/dist/d3.min.js" as="script">
+    <link rel="preload" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" as="script">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <div class="wave-animation">🌊</div>
+                <h1>Ocean Sentinel</h1>
+            </div>
+            <div class="loading-progress">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="loading-progress"></div>
+                </div>
+                <p class="loading-text" id="loading-text">Initializing system...</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Application Container -->
+    <div id="app" class="dashboard-container" style="display: none;">
+        <!-- Sidebar Navigation -->
+        <nav class="dashboard-sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-logo">
+                    <span class="logo-icon">🌊</span>
+                    <span class="logo-text">Ocean Sentinel</span>
+                </div>
+            </div>
+            
+            <div class="sidebar-nav">
+                <a href="#dashboard" class="nav-item active" data-section="dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+                <a href="#threats" class="nav-item" data-section="threats">
+                    <span class="nav-icon">🚨</span>
+                    <span class="nav-text">Threats</span>
+                </a>
+                <a href="#alerts" class="nav-item" data-section="alerts">
+                    <span class="nav-icon">📢</span>
+                    <span class="nav-text">Alerts</span>
+                </a>
+                <a href="#monitoring" class="nav-item" data-section="monitoring">
+                    <span class="nav-icon">🔍</span>
+                    <span class="nav-text">Monitoring</span>
+                </a>
+                <a href="#blockchain" class="nav-item" data-section="blockchain">
+                    <span class="nav-icon">⛓️</span>
+                    <span class="nav-text">Blockchain</span>
+                </a>
+                <a href="#analytics" class="nav-item" data-section="analytics">
+                    <span class="nav-icon">📈</span>
+                    <span class="nav-text">Analytics</span>
+                </a>
+                <a href="#settings" class="nav-item" data-section="settings">
+                    <span class="nav-icon">⚙️</span>
+                    <span class="nav-text">Settings</span>
+                </a>
+            </div>
+        </nav>
+        
+        <!-- Main Content Area -->
+        <main class="dashboard-main">
+            <!-- Header -->
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+                        <span class="hamburger"></span>
+                    </button>
+                    <h1 class="header-title">Ocean Sentinel Dashboard</h1>
+                </div>
+                
+                <div class="header-right">
+                    <div class="connection-status" id="connection-status">
+                        <span class="status-indicator"></span>
+                        <span class="status-text">Connecting...</span>
+                    </div>
+                    
+                    <div class="monitoring-status" id="monitoring-status">
+                        <span class="status-text">Monitoring Inactive</span>
+                    </div>
+                    
+                    <div class="user-menu">
+                        <button class="user-avatar" id="user-menu-toggle">
+                            <span class="avatar-icon">👤</span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Content Sections -->
+            <div class="dashboard-content" id="main-content">
+                <!-- Dashboard Section -->
+                <section class="content-section active" id="dashboard-section">
+                    <!-- Metrics Grid -->
+                    <div class="metrics-grid">
+                        <div class="metric-card" id="active-threats-card">
+                            <div class="metric-value" id="active-threats-count">-</div>
+                            <div class="metric-label">Active Threats</div>
+                            <div class="metric-change" id="threats-change"></div>
+                        </div>
+                        <div class="metric-card" id="alerts-sent-card">
+                            <div class="metric-value" id="alerts-sent-count">-</div>
+                            <div class="metric-label">Alerts Sent</div>
+                            <div class="metric-change" id="alerts-change"></div>
+                        </div>
+                        <div class="metric-card" id="data-sources-card">
+                            <div class="metric-value" id="data-sources-count">-</div>
+                            <div class="metric-label">Data Sources</div>
+                            <div class="metric-change" id="sources-change"></div>
+                        </div>
+                        <div class="metric-card" id="blockchain-verified-card">
+                            <div class="metric-value" id="blockchain-verified-count">-</div>
+                            <div class="metric-label">Blockchain Verified</div>
+                            <div class="metric-change" id="blockchain-change"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Main Dashboard Grid -->
+                    <div class="dashboard-row">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">🗺️ Threat Map</h2>
+                                <div class="card-actions">
+                                    <button class="btn btn-secondary btn-sm" id="refresh-map">Refresh</button>
+                                </div>
+                            </div>
+                            <div class="card-content">
+                                <div class="threat-map-container">
+                                    <div id="threat-map"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">📊 Recent Activity</h2>
+                            </div>
+                            <div class="card-content">
+                                <div id="threat-timeline-chart" class="chart-container"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Charts Row -->
+                    <div class="dashboard-row">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">🎯 Threat Severity Distribution</h2>
+                            </div>
+                            <div class="card-content">
+                                <div id="severity-distribution-chart" class="chart-container"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-header">
+                                <h2 class="card-title">🌡️ Environmental Metrics</h2>
+                            </div>
+                            <div class="card-content">
+                                <div id="environmental-metrics-chart" class="chart-container"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Threats Section -->
+                <section class="content-section" id="threats-section" style="display: none;">
+                    <div class="section-header">
+                        <h2>🚨 Active Threats</h2>
+                        <div class="section-actions">
+                            <button class="btn btn-primary" id="add-threat">Add Threat</button>
+                            <button class="btn btn-secondary" id="export-threats">Export</button>
+                        </div>
+                    </div>
+                    
+                    <div class="threats-container">
+                        <div class="table-responsive">
+                            <table class="data-table" id="threats-table">
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Severity</th>
+                                        <th>Confidence</th>
+                                        <th>Location</th>
+                                        <th>Detected</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Dynamic content -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Other sections would be similar... -->
+                
+                <!-- Monitoring Section -->
+                <section class="content-section" id="monitoring-section" style="display: none;">
+                    <div class="section-header">
+                        <h2>🔍 Threat Monitoring</h2>
+                        <div class="section-actions">
+                            <button class="btn btn-primary" id="toggle-monitoring">Start Monitoring</button>
+                        </div>
+                    </div>
+                    
+                    <div class="monitoring-controls">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Monitoring Configuration</h3>
+                            </div>
+                            <div class="card-content">
+                                <div class="form-group">
+                                    <label class="form-label">Monitoring Interval (seconds)</label>
+                                    <input type="number" class="form-input" id="monitoring-interval" value="30" min="10" max="300">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Detection Thresholds</label>
+                                    <div id="threshold-controls">
+                                        <!-- Dynamic threshold controls -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Mobile Overlay -->
+    <div class="mobile-overlay" id="mobile-overlay"></div>
+    
+    <!-- Alert Container -->
+    <div id="alert-container" class="alert-container"></div>
+    
+    <!-- Blockchain Verifications Container -->
+    <div id="blockchain-verifications" class="blockchain-verifications-container"></div>
+    
+    <!-- External JavaScript Dependencies -->
+    <script src="https://unpkg.com/d3@7.8.5/dist/d3.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+    <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2.38.4/dist/umd/supabase.js"></script>
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.13.0/dist/tf.min.js"></script>
+    
+    <!-- Application JavaScript -->
+    <script>
+        // Global configuration
+        window.OCEAN_SENTINEL_CONFIG = {
+            apiBaseUrl: window.location.origin + '/api/v1',
+            supabaseUrl: 'SUPABASE_URL_PLACEHOLDER',
+            supabaseAnonKey: 'SUPABASE_ANON_KEY_PLACEHOLDER',
+            pusherKey: 'PUSHER_KEY_PLACEHOLDER',
+            pusherCluster: 'PUSHER_CLUSTER_PLACEHOLDER'
+        };
+        
+        // Loading progress tracker
+        let loadingProgress = 0;
+        const updateLoadingProgress = (progress, text) => {
+            loadingProgress = Math.min(100, progress);
+            document.getElementById('loading-progress').style.width = loadingProgress + '%';
+            document.getElementById('loading-text').textContent = text;
+        };
+        
+        // Initialize loading
+        updateLoadingProgress(10, 'Loading dependencies...');
+    </script>
+    
+    <!-- Load application modules -->
+    <script src="/js/real_time.js"></script>
+    <script>updateLoadingProgress(25, 'Initializing real-time connections...');</script>
+    
+    <script src="/js/blockchain.js"></script>
+    <script>updateLoadingProgress(40, 'Loading blockchain client...');</script>
+    
+    <script src="/js/charts.js"></script>
+    <script>updateLoadingProgress(55, 'Setting up visualizations...');</script>
+    
+    <script src="/js/maps.js"></script>
+    <script>updateLoadingProgress(70, 'Initializing maps...');</script>
+    
+    <script src="/js/alerts.js"></script>
+    <script>updateLoadingProgress(85, 'Loading alert system...');</script>
+    
+    <script src="/js/threat_monitor.js"></script>
+    <script>updateLoadingProgress(90, 'Starting threat monitor...');</script>
+    
+    <script src="/js/dashboard.js"></script>
+    <script>updateLoadingProgress(100, 'Finalizing setup...');</script>
+    
+    <!-- Application Initialization -->
+    <script>
+        // Wait for all modules to load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                // Hide loading screen
+                document.getElementById('loading-screen').style.display = 'none';
+                document.getElementById('app').style.display = 'flex';
+                
+                console.log('🌊 Ocean Sentinel application loaded successfully');
+            }, 500);
+        });
+        
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(registration => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(registrationError => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+        
+        // Handle navigation
+        document.addEventListener('click', (e) => {
+            if (e.target.matches('.nav-item')) {
+                e.preventDefault();
+                
+                // Update active nav item
+                document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+                e.target.classList.add('active');
+                
+                // Show corresponding section
+                const section = e.target.dataset.section;
+                document.querySelectorAll('.content-section').forEach(sec => {
+                    sec.style.display = sec.id === `${section}-section` ? 'block' : 'none';
+                    sec.classList.toggle('active', sec.id === `${section}-section`);
+                });
+            }
+        });
+        
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-toggle')?.addEventListener('click', () => {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('mobile-overlay');
+            
+            sidebar.classList.toggle('mobile-open');
+            overlay.classList.toggle('active');
+        });
+        
+        // Close mobile menu on overlay click
+        document.getElementById('mobile-overlay')?.addEventListener('click', () => {
+            document.getElementById('sidebar').classList.remove('mobile-open');
+            document.getElementById('mobile-overlay').classList.remove('active');
+        });
+    </script>
+    
+    <style>
+        /* Loading Screen Styles */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #0891b2 0%, #0e7490 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            color: white;
+        }
+        
+        .loading-content {
+            text-align: center;
+            max-width: 400px;
+        }
+        
+        .loading-logo {
+            margin-bottom: 2rem;
+        }
+        
+        .wave-animation {
+            font-size: 4rem;
+            animation: wave 2s ease-in-out infinite;
+        }
+        
+        @keyframes wave {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .loading-logo h1 {
+            font-size: 2rem;
+            margin: 1rem 0;
+            font-weight: 600;
+        }
+        
+        .loading-progress {
+            margin-top: 2rem;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: white;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .loading-text {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+        
+        /* Mobile Menu Styles */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+        }
+    </style>
+</body>
+</html>
