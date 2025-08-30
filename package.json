@@ -1,0 +1,38 @@
+{
+  "name": "ocean-sentinel",
+  "version": "1.0.0",
+  "description": "AI-Powered Coastal Threat Intelligence System for Indian Ocean monitoring",
+  "main": "index.html",
+  "scripts": {
+    "start": "live-server --port=3000",
+    "dev": "live-server --port=3000 --open=/",
+    "build": "echo 'Building Ocean Sentinel...' && npm run minify",
+    "minify": "echo 'Minification would happen here'",
+    "deploy": "npm run build && echo 'Deployment ready - use gh-pages or similar'",
+    "test": "echo 'Tests would run here'"
+  },
+  "keywords": [
+    "ocean-monitoring",
+    "ai",
+    "threat-intelligence",
+    "coastal-surveillance",
+    "indian-ocean",
+    "real-time-data",
+    "blockchain"
+  ],
+  "author": "Ocean Sentinel Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/ocean-sentinel.git"
+  },
+  "dependencies": {
+    "live-server": "^1.2.2"
+  },
+  "devDependencies": {
+    "gh-pages": "^6.1.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
